@@ -1,0 +1,112 @@
+require:
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 2.7
+  NewCops: enable
+
+# This cop works in Rails 5+
+Rails/HttpPositionalArguments:
+  Enabled: false
+
+# This cop looks for delegations that could have been created automatically with the delegate method.
+# Delegation is not our thing when looking at the code base.
+Rails/Delegate:
+  Enabled: false
+
+Rails/FilePath:
+  EnforcedStyle: slashes
+
+### STYLE COPS ###
+
+# Disable checking how class/modules are defined
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+# Disable Cop that insist on documentation before each class
+Style/Documentation:
+  Enabled: false
+
+# Prefer single quotes unless you are using interpolation or need to escape a single-quote
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+# Double negations are useful in predicates.
+# Sadly there is no option to enable them only for them :<
+Style/DoubleNegation:
+  Enabled: false
+
+# accept `has_key?` and `has_value?` as proper hash methods
+Style/PreferredHashMethods:
+  Enabled: false
+
+# allow sugar method like `def self.call(*args); new.call(*args); end`
+Style/SingleLineMethods:
+  Enabled: false
+
+# Preference on this one is spread 50-50 so I decided to use no_comma as
+# it was more widely used in a project
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: no_comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: no_comma
+
+Style/Lambda:
+  Enabled: false
+
+# Even though I should prefer guard clauses for early return when method conditions are not met
+# This cop often conflicts line-length cop.
+# It also forces us to convert to guard clause where regular `if` would make more sense
+Style/GuardClause:
+  Enabled: false
+
+# I prefer #reduce to #each_with_object
+Style/EachWithObject:
+  Enabled: false
+
+# I prefer the consistent style
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
+# I prefer the consistent style
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+# Indent multiline chained method calls by one step instead of
+# aligning with caller caret position.
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+# Add new line right after `=` if right-side operand is multiline
+Layout/MultilineAssignmentLayout:
+  EnforcedStyle: new_line
+
+# Disable AmbiguousBlockAssociation in test files as it is agains RSpec idioms
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - spec/**/*
+
+# Disable DuplicateBranch because sometimes the duplications improves readability
+Lint/DuplicateBranch:
+  Enabled: false
+
+Lint/MissingSuper:
+  Enabled: false
+
+### METRICS COPS ###
+
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - "config/**/*"
+
+# Disable Module and Block Length in test files
+Metrics/ModuleLength:
+  Exclude:
+    - "spec/**/*"
+
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*"
