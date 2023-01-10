@@ -2,7 +2,6 @@
 
 require_relative './app_schema'
 
-
 module Ticketmaster
   module Schemas
     class Events < Ticketmaster::Schemas::AppSchema
