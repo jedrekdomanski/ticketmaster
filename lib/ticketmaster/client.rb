@@ -1,46 +1,6 @@
 # frozen_string_literal: true
 
 module Ticketmaster
-  class Response
-    def initialize(response)
-      @response = response
-    end
-
-    def body
-      @response.body
-    end
-
-    def raw_body
-      @response.env[:raw_body]
-    end
-
-    def headers
-      @headers ||= @response.headers
-    end
-
-    def rate_limit
-      headers['rate-limit']
-    end
-
-    def rate_limit_available
-      headers['rate-limit-available']
-    end
-
-    def rate_limit_over
-      headers['rate-limit-over']
-    end
-
-    def rate_limit_reset
-      headers['rate-limit-reset']
-    end
-
-    def status
-      @response.status
-    end
-  end
-
-  private_constant :Response
-
   class Connection
     ROOT_URL = 'https://app.ticketmaster.com'
     DEFAULT_TIMEOUT = 15
@@ -64,7 +24,7 @@ module Ticketmaster
           logger.filter(/(apikey=)([^&]+)/, '\1[FILTERED]')
         end
         connection.options.timeout = DEFAULT_TIMEOUT
-        connection.adapter :httpclient
+        connection.adapter Faraday.default_adapter
       end
     end
 
@@ -78,15 +38,13 @@ module Ticketmaster
   private_constant :Connection
 
   class Client
-    ConfigurationError = Class.new(StandardError)
-
-    def initialize(client: Connection.new)
-      @client = client
+    def initialize(connection: Connection.new)
+      @connection = connection
     end
 
-    def send_request(resource, options)
+    def send_request(method, resource, options)
       params = build_request(options)
-      @client.get(resource, params)
+      @connection.send(method, resource, params)
     end
 
     private

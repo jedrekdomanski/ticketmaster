@@ -2,8 +2,11 @@
 
 require 'faraday'
 
-require 'ticketmaster/version'
 require 'ticketmaster/client'
+require 'ticketmaster/response'
+require 'ticketmaster/version'
+require 'ticketmaster/discovery/client'
+require 'ticketmaster/discovery/response'
 
 base_directory = File.expand_path('./ticketmaster', File.dirname(__FILE__))
 Dir.entries("#{base_directory}/schemas").each do |f|

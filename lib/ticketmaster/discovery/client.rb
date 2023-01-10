@@ -7,12 +7,12 @@ module Ticketmaster
         @client = client
       end
 
-      def find_events(options:)
-        @client.send_request('/discovery/v2/events', options)
+      def find_events(params)
+        @client.send_request(:get, '/discovery/v2/events', params)
       end
 
-      def get_event_details(options:)
-        @client.send_request('/discovery/v2/events', options)
+      def get_event_details(params)
+        @client.send_request(:get, '/discovery/v2/events', params)
       end
     end
   end
