@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'pry'
+
 module Ticketmaster
   class Connection
     ROOT_URL = 'https://app.ticketmaster.com'
@@ -9,9 +11,8 @@ module Ticketmaster
       @connection = prepare_connection
     end
 
-    def get(resource, params)
-      response = make_request(resource, params)
-      Response.new(response)
+    def get(resource, input)
+      make_request(resource, input)
     end
 
     private
@@ -19,8 +20,9 @@ module Ticketmaster
     def prepare_connection
       ::Faraday.new(url: ROOT_URL) do |connection|
         connection.request :json
+        connection.options[:params_encoder] = Faraday::FlatParamsEncoder
         connection.response :json, { preserve_raw: true, content_type: /\bjson$/ }
-        connection.response :logger, nil, { bodies: { request: true, response: false } } do |logger|
+        connection.response :logger, nil, bodies: { request: true, response: true } do |logger|
           logger.filter(/(apikey=)([^&]+)/, '\1[FILTERED]')
         end
         connection.options.timeout = DEFAULT_TIMEOUT
@@ -32,25 +34,6 @@ module Ticketmaster
       @connection.get(resource) do |req|
         req.params = params
       end
-    end
-  end
-
-  private_constant :Connection
-
-  class Client
-    def initialize(connection: Connection.new)
-      @connection = connection
-    end
-
-    def send_request(method, resource, options)
-      params = build_request(options)
-      @connection.send(method, resource, params)
-    end
-
-    private
-
-    def build_request(options)
-      options.merge(apikey: ENV.fetch('TICKETMASTER_API_KEY'))
     end
   end
 end
