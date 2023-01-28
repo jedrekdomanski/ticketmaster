@@ -29,7 +29,10 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.add_dependency 'activesupport'
   spec.add_dependency 'dry-schema', '~> 1.10'
+
+  spec.add_development_dependency 'awesome_print'
   spec.add_development_dependency 'faraday', '~> 1.10'
   spec.add_development_dependency 'guard-rspec', '~> 4.7'
   spec.add_development_dependency 'pry'

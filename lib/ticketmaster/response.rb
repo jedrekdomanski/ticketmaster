@@ -7,7 +7,7 @@ module Ticketmaster
     end
 
     def body
-      @response.body
+      @body ||= @response.body
     end
 
     def raw_body
@@ -39,3 +39,4 @@ module Ticketmaster
     end
   end
 end
+

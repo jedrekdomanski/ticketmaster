@@ -1,17 +1,15 @@
 # frozen_string_literal: true
 
+require 'active_support/all'
+require 'awesome_print'
 require 'faraday'
-
-require 'ticketmaster/client'
+require 'ticketmaster/base_schema'
+require 'ticketmaster/connection'
 require 'ticketmaster/response'
 require 'ticketmaster/version'
 require 'ticketmaster/discovery/client'
-require 'ticketmaster/discovery/response'
-
-base_directory = File.expand_path('./ticketmaster', File.dirname(__FILE__))
-Dir.entries("#{base_directory}/schemas").each do |f|
-  require "#{base_directory}/schemas/#{f}" if f.match(/rb$/)
-end
+require 'ticketmaster/discovery/schemas/requests/event_details'
+require 'ticketmaster/discovery/schemas/requests/event_search'
 
 module Ticketmaster
   class Error < StandardError; end
