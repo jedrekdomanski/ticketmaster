@@ -5,7 +5,7 @@ module Ticketmaster
     module Schemas
       module Requests
         EventDetails = Dry::Schema.Params(parent: ::Ticketmaster::BaseSchema) do
-          optional(:id).filled(:string)
+          required(:id).filled(:string)
           optional(:locale).filled(:string)
           optional(:domain).array(:string)
         end
